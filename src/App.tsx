@@ -1,33 +1,19 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import { useRef, Suspense } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "@react-three/drei";
-
-function Cube() {
-  const meshRef = useRef<THREE.Mesh>(null!);
-
-  useFrame(() => {
-    meshRef.current.rotation.x += 0.01;
-    meshRef.current.rotation.y += 0.01;
-  });
-
-  return (
-    <mesh ref={meshRef}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="orange" />
-    </mesh>
-  );
-}
+import Body from "./components/body";
 
 export default function App() {
   return (
-    <Canvas camera={{ position: [3, 3, 3], fov: 60 }}>
-      <ambientLight intensity={2} />
-      <directionalLight position={[5, 5, 5]} intensity={2} />
-
-      <Cube />
+    <Canvas camera={{ position: [3, 1, 7], fov: 60 }}>
+      <ambientLight intensity={1} />
+      <directionalLight position={[5, 90, 5]} intensity={2} />
+      <Suspense fallback={null}>
+        <Body />
+      </Suspense>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1, 0]}>
-        <planeGeometry args={[10, 10]} />
+        <circleGeometry args={[2]} />
         <meshStandardMaterial color="#555555" />
       </mesh>
       <OrbitControls />
